@@ -167,16 +167,26 @@ def FFTABS(List):
     return ABSList
 
 
-def TSVDepth(FFTHPList, NewWNList):
+def TSVDepth(FFTHPList, NewWNList, MinBoundary, MinRatio):
     #InputList = FFTHPList.copy()
     InputList = FFTHPList
     InputList[0] = 0
     for leng in range(len(InputList)):
         if leng >= len(NewWNList)/2:
             InputList[leng] = 0
-
-    location = InputList.index(max(InputList))
-    print("FFT number: ", location)
-    Depth = location/(2*(NewWNList[0]-NewWNList[-1]))
+    location = 0
+    
+    while(location < MinBoundary):
+        InputList[location] = 0
+        location = InputList.index(max(InputList))
+    Average = round(sum(InputList)/len(InputList),3)
+    Peak = round(InputList[location],3)
+    if Peak/Average < MinRatio:
+        Depth = "Unknown"
+    else:
+        Depth = location/(2*(NewWNList[0]-NewWNList[-1]))
+        Unit_um = pow(10, -6)
+        Depth = round(Depth/Unit_um,3)
+        Depth = str(Depth) + " um"
     return Depth
 
