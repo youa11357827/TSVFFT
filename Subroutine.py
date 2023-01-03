@@ -1,4 +1,43 @@
 import scipy
+import sys
+
+
+def ReadCommand(Command):
+    # Find file mode
+    ModeIndex = Command.index("-m")
+    Mode = Command[ModeIndex + 1]
+    #Excel Command dict
+    ExcelCommand = {
+        "-m": "Mode",
+        "-f": "ExcelFileName",
+        "-s": "ExcelFileSheet",
+        "-l": "ExcelWaveLength",
+        "-r": "Reflectance"
+    }
+
+    #spt Command dict
+    SptCommand = {
+        "-m": "Mode",
+        "-f": "SptFileName"
+    }
+
+    #Read Command and return
+    match Mode:
+        case "excel":
+            for cnt in range(len(Command)):
+                if Command[cnt] in ExcelCommand:
+                    ExcelCommand[Command[cnt]] = Command[cnt+1]
+            return ExcelCommand
+                    
+
+        case "spt":
+            for cnt in range(len(Command)):
+                if Command[cnt] in SptCommand:
+                    SptCommand[Command[cnt]] = Command[cnt+1]
+            return SptCommand
+    
+        
+
 def Convolution(lis,num,times,mode):
     l = lis.copy()
     NewL = []
